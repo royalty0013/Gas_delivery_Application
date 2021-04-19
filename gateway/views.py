@@ -70,9 +70,9 @@ class LoginView(APIView):
             "email":user_details.email,
             "phone_number":user_details.phone_number,
             "user_type":user_details.user_type,
-            "verification status":user_details.is_verified,
-            "active status":user_details.is_active,
-            "account creation date":user_details.created_at,
+            "verification_status":user_details.is_verified,
+            "active_status":user_details.is_active,
+            "account_creation_date":user_details.created_at,
             "status_code": 200,
             "token": access,
             "message": "User logged in successfully"
