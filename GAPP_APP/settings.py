@@ -11,7 +11,12 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
-from decouple import config
+import environ
+
+env = environ.Env()
+
+# reading .env file
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +26,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'mg)d692bt&u&o2%3y^844=#4opv#-pw@mb$$sal=7!z0h$s!k7'
+SECRET_KEY = env("SECRET_KEY")
+# SECRET_KEY = 'mg)d692bt&u&o2%3y^844=#4opv#-pw@mb$$sal=7!z0h$s!k7'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -43,6 +49,7 @@ INSTALLED_APPS = [
     'django_seed',
     'user',
     'gateway',
+    'transaction',
     'django_rest_passwordreset',
 
 ]
@@ -92,18 +99,15 @@ WSGI_APPLICATION = 'GAPP_APP.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DB_name = config('NAME')
-DB_user = config('USER')
-DB_password = config('PASSWORD')
-DB_host = config('HOST')
+
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': DB_name,
-        'USER': DB_user,
-        'PASSWORD': DB_password,
-        'HOST' : DB_host,
+        'NAME': env("DATABASE_NAME"),
+        'USER': env("DATABASE_USER"),
+        'PASSWORD': env("DATABASE_PASSWORD"),
+        'HOST' : env("DATABASE_HOST"),
     }
 }
 
@@ -149,7 +153,7 @@ STATIC_URL = '/static/'
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'royalty0013@gmail.com'
-EMAIL_HOST_PASSWORD = 'Oshiapemhe1/'
+EMAIL_HOST_USER = env("EMAIL")
+EMAIL_HOST_PASSWORD = env("PASSWORD")
 EMAIL_PORT = 587
 

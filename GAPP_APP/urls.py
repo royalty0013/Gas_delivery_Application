@@ -19,6 +19,6 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/gateway/', include('gateway.urls')),
-    path('api/', include('user.urls'))
+    path('api/', include('transaction.urls'))
     # path('api/password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset'))
 ]
