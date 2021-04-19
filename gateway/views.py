@@ -62,7 +62,22 @@ class LoginView(APIView):
         Jwt.objects.create(
             user_id=user.id, access=access.decode(), refresh=refresh.decode()
         )
-        return Response({"access":access, "refresh":refresh})
+        email= serializer.validated_data['email']
+        user_details = User.objects.get(email=email)
+
+        response ={
+            "name":user_details.name,
+            "email":user_details.email,
+            "phone_number":user_details.phone_number,
+            "user_type":user_details.user_type,
+            "verification status":user_details.is_verified,
+            "active status":user_details.is_active,
+            "account creation date":user_details.created_at,
+            "status_code": 200,
+            "token": access,
+            "message": "User logged in successfully"
+        }
+        return Response(response)
 
 # class RefreshTokenView(APIView):
 #     serializer_class = RefreshSerializer
@@ -101,7 +116,6 @@ class RegisterView(APIView):
 
             access_token = get_access_token({"user_id":user.id})
             access_token = access_token.decode()
-            print(access_token)
 
             current_site = get_current_site(request).domain
             relative_link = reverse("verify-email")
@@ -112,7 +126,14 @@ class RegisterView(APIView):
             
             data = {"email_body": email_body, "email_subject":"Please verify your email", "to_email":user.email }
             Util.send_email(data)
-            return Response(user_data, status=status.HTTP_201_CREATED)
+
+            response = {
+                "name" : user.name.title(),
+                "email":user.email.lower(),
+                "phone_number":user.phone_number,
+                "message": "Verification email sent to your mail"
+            }
+            return Response(response, status=status.HTTP_201_CREATED)
 
         except IntegrityError:
             return Response({"Error": "Email already exist"})

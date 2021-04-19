@@ -12,3 +12,4 @@ urlpatterns = [
     path("password-reset-confirmed/", setNewPasswordView.as_view(), name="password-reset-confirmed")
 
 ]
+
