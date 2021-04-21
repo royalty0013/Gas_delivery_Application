@@ -15,10 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from transaction.views import  GasSizesViewSet
+
+router = DefaultRouter()
+router.register("gas-sizes", GasSizesViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/gateway/', include('gateway.urls')),
-    path('api/', include('transaction.urls'))
+    path('api/', include('transaction.urls')),
+    path('api/user/', include('user.urls')),
+    path("api/gas/", include(router.urls))
     # path('api/password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset'))
 ]

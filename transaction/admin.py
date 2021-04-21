@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Purchase, Transaction
+from .models import Purchase, Transaction, Gas_Sizes
 # Register your models here.
 
 class PurchaseAdmin(admin.ModelAdmin):
@@ -9,3 +9,7 @@ admin.site.register(Purchase, PurchaseAdmin)
 class TransactionAdmin(admin.ModelAdmin):
     list_display = [ 'customer_id', 'transporter_id','vendor_id', 'transaction_completed','transaction_verified', 'Reference_id',  'created_at', 'updated_at']
 admin.site.register(Transaction, TransactionAdmin)
+
+class Gas_SizesAdmin(admin.ModelAdmin):
+    list_display = [ 'title', 'price','litre_number','created_at', 'updated_at']
+admin.site.register(Gas_Sizes, Gas_SizesAdmin)

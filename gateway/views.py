@@ -28,7 +28,7 @@ def get_random(length):
 
 def get_access_token(payload):
     return jwt.encode(
-        {"exp":datetime.now() + timedelta(minutes=5), **payload},
+        {"exp":datetime.now() + timedelta(days=365), **payload},
         st.SECRET_KEY,
         algorithm="HS256"
     )
@@ -229,6 +229,8 @@ class setNewPasswordView(generics.GenericAPIView):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         return Response({"success":True, "Message":"Password reset successful"}, status=status.HTTP_200_OK)
+
+
 
 
 

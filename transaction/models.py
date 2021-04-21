@@ -26,9 +26,22 @@ class Transaction(models.Model):
     vendor_id = models.ForeignKey(User, related_name="Vendor_name", on_delete=models.CASCADE)
     transaction_completed = models.BooleanField(default=False)
     transaction_verified = models.BooleanField(default=False)
-    Reference_id = models.CharField(max_length=100)
+    Reference_id = models.CharField(max_length=100, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name_plural = "Transaction Records"
+
+class Gas_Sizes(models.Model):
+    title = models.CharField(max_length=50, null=True)
+    price = models.FloatField()
+    litre_number = models.FloatField()
+    created_at = models.DateField(auto_now_add=True)
+    updated_at =models.DateField(auto_now=True)
+
+    def __str__(self):
+        return self.title
+    
+    class Meta:
+        verbose_name_plural = "Gas Sizes"
