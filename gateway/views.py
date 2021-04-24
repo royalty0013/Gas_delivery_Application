@@ -122,7 +122,7 @@ class RegisterView(APIView):
             # absurl = "http://"+current_site+relative_link+"?token="+token
             absurl = f"http://{current_site}{relative_link}?token={access_token}"
             email_body = f" Hi {user.name}\n\nPlease use the link below to verify your email address\n\n{absurl}\n\n"
-            email_body += "please note the verification link expires in 5 minutes"
+            # email_body += "please note the verification link expires in 5 minutes"
             
             data = {"email_body": email_body, "email_subject":"Please verify your email", "to_email":user.email }
             Util.send_email(data)
