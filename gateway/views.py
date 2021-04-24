@@ -28,7 +28,7 @@ def get_random(length):
 
 def get_access_token(payload):
     return jwt.encode(
-        {"exp":datetime.now() + timedelta(days=365), **payload},
+        {"exp":datetime.now() + timedelta(minutes=525600), **payload},
         st.SECRET_KEY,
         algorithm="HS256"
     )
