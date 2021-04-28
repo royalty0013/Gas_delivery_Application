@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+import math
 # Create your models here.
 
 USERS = (
@@ -52,11 +53,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
-class VendorProfile(models.Model):
+class Vendor_shop(models.Model):
     vendor = models.OneToOneField(User, on_delete=models.CASCADE)
     company_name = models.CharField(max_length=100, null=True, blank=True)
     user_type = models.CharField(max_length=20, choices=USERS, default="Vendor")
     address = models.TextField()
+    phone_number = models.CharField(max_length=30, null=True)
     latitude = models.FloatField()
     longitude = models.FloatField()
     created_at = models.DateField(auto_now_add=True)
@@ -66,7 +68,7 @@ class VendorProfile(models.Model):
         return self.company_name
 
     class Meta:
-        verbose_name_plural = "Vendor Profiles"
+        verbose_name_plural = "Vendors"
     
 
 

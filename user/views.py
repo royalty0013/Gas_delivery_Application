@@ -3,12 +3,67 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
-from .serializers import VendorProfileSerializer
-from .models import VendorProfile
+from .serializers import Vendor_shopSerializer
+from .models import Vendor_shop
+import math
+
+def distance(lat1, lon1, lat2, lon2):
+
+    #distance between latitudes and longitudes
+    dLat = (lat2 - lat1) * math.pi / 180.0
+    dLon = (lon2 - lon1) * math.pi / 180.0
+
+    #convert to radians
+    lat1 = (lat1) * math.pi / 180.0
+    lat2 = (lat2) * math.pi / 180.0
+
+    #apply formula
+    a = (pow(math.sin(dLat / 2), 2) + pow(math.sin(dLon / 2), 2) * math.cos(lat1) * math.cos(lat2))
+
+    radius = 6371
+    c = 2 * math.asin(math.sqrt(a))
+    distance = radius * c
+    return distance
+
 
 class VendorAPIView(APIView):
+    serializer_class = Vendor_shopSerializer
     permission_classes = [IsAuthenticated]
     def get(self, request):
-        queryset = VendorProfile.objects.all()
-        serializer = VendorProfileSerializer(queryset, many=True)
+        queryset = Vendor_shop.objects.all()
+        serializer = Vendor_shopSerializer(queryset, many=True)
         return Response(serializer.data)
+
+    def post(self, request):
+        data = request.data
+        serializer = self.serializer_class(data=data)
+        serializer.is_valid(raise_exception=True)
+
+        lat = serializer.validated_data["latitude"]
+        long = serializer.validated_data["longitude"]
+
+        vendors = Vendor_shop.objects.all()
+        vendor = {}
+        # vendor_list = []
+        for vend in vendors:
+            # vendor_list.append(vend)
+
+            v_lat = vend.latitude
+            v_long = vend.longitude
+            dis = distance(lat, long, v_lat, v_long)
+            # print(dis)
+            if dis <= 5.0:
+                vendor["vendor_id"] = vend.id
+                vendor["Vendor_name"] = vend.company_name
+                vendor["lat"] = vend.latitude
+                vendor["long"] = vend.longitude
+                vendor["address"] = vend.address
+                vendor["distance"] = f"{dis}km"
+            # return Response({"Message":vendor}, status=status.HTTP_200_OK)
+        # print(vendor_list)
+        return Response({"Vendor":vendor}, status=status.HTTP_200_OK)
+
+
+        
+
+

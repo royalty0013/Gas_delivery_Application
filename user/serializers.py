@@ -1,7 +1,9 @@
 from rest_framework import serializers
-from .models import VendorProfile
+from .models import Vendor_shop
 
-class VendorProfileSerializer(serializers.ModelSerializer):
+class Vendor_shopSerializer(serializers.ModelSerializer):
     class Meta:
-        model = VendorProfile
-        fields = "__all__"
+        model = Vendor_shop
+        fields = ["latitude", "longitude"]
+        latitude = serializers.FloatField()
+        longitude = serializers.FloatField()
