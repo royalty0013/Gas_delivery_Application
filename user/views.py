@@ -5,7 +5,9 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from .serializers import Vendor_shopSerializer
 from .models import Vendor_shop
+from transaction.models import Transportation_cost_per_km
 import math
+from django.core.exceptions import ObjectDoesNotExist
 
 def distance(lat1, lon1, lat2, lon2):
 
@@ -41,10 +43,15 @@ class VendorAPIView(APIView):
 
         lat = serializer.validated_data["latitude"]
         long = serializer.validated_data["longitude"]
+        
+        try:
+            delivery_unit_price = Transportation_cost_per_km.objects.get(pk=1)
+            delivery_unit_price = delivery_unit_price.unit_price 
+        except ObjectDoesNotExist:
+            delivery_unit_price = 100
 
         vendors = Vendor_shop.objects.all()
         vendor = {}
-        # vendor_list = []
         for vend in vendors:
             # vendor_list.append(vend)
 
@@ -59,6 +66,7 @@ class VendorAPIView(APIView):
                 vendor["long"] = vend.longitude
                 vendor["address"] = vend.address
                 vendor["distance"] = f"{dis}km"
+                vendor["delivery_fee"] = math.ceil(dis) * delivery_unit_price
             # return Response({"Message":vendor}, status=status.HTTP_200_OK)
         # print(vendor_list)
         return Response({"Vendor":vendor}, status=status.HTTP_200_OK)

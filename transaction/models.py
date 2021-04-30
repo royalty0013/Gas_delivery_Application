@@ -2,14 +2,17 @@ from django.db import models
 import jsonfield
 from django.utils import timezone
 from user.models import User
+from user.models import Vendor_shop
 
 # Create your models here.
 
 class Purchase(models.Model):
     customer_id = models.ForeignKey(User, related_name="Customer_account", on_delete=models.CASCADE)
+    vendor_id = models.ForeignKey(Vendor_shop, related_name="Vendor", on_delete=models.CASCADE)
     items_purchased = models.JSONField()
-    price = models.FloatField()
-    vendor_id = models.ForeignKey(User, related_name="Vendor", on_delete=models.CASCADE) 
+    item_cost = models.FloatField(default=0)
+    transporter = models.CharField(max_length=50, null=True)
+    transportation_cost = models.FloatField(default=0)
     vendor_completed = models.BooleanField(default=False)
     transporter_completed = models.BooleanField(default=False)
     customer_completed = models.BooleanField(default=False)
@@ -19,6 +22,15 @@ class Purchase(models.Model):
 
     class Meta:
         verbose_name_plural = "Purchase Records"
+
+class Transportation_cost_per_km(models.Model):
+    unit_price = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name_plural = "Delivery Unit price/Km"
+
 
 class Transaction(models.Model):
     customer_id = models.ForeignKey(User, related_name="Customer_name", on_delete=models.CASCADE)
@@ -45,3 +57,15 @@ class Gas_Sizes(models.Model):
     
     class Meta:
         verbose_name_plural = "Gas Sizes"
+
+class Card_details(models.Model):
+    user = models.ForeignKey(User, related_name="customer_card_detail", on_delete=models.CASCADE)
+    card_name = models.CharField(max_length=100, null=True)
+    card_number = models.CharField(max_length=25, null=True)
+    CVV = models.IntegerField()
+    expiry_date = models.CharField(max_length=10, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name_plural = "Customer Card Details"
