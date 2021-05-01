@@ -60,7 +60,7 @@ class Gas_Sizes(models.Model):
 
 class Card_details(models.Model):
     user = models.ForeignKey(User, related_name="customer_card_detail", on_delete=models.CASCADE)
-    card_name = models.CharField(max_length=100, null=True)
+    card_type = models.CharField(max_length=30, null=True)
     card_number = models.CharField(max_length=25, null=True)
     CVV = models.IntegerField()
     expiry_date = models.CharField(max_length=10, null=True)

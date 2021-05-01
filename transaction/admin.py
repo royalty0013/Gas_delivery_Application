@@ -19,5 +19,5 @@ class TransporterUnitPriceAdmin(admin.ModelAdmin):
 admin.site.register(Transportation_cost_per_km, TransporterUnitPriceAdmin)
 
 class Card_detailsAdmin(admin.ModelAdmin):
-    list_display = ['user','card_name', 'card_number', 'CVV', 'expiry_date', 'created_at', 'updated_at']
+    list_display = ['user','card_type', 'card_number', 'CVV', 'expiry_date', 'created_at', 'updated_at']
 admin.site.register(Card_details, Card_detailsAdmin)
