@@ -22,7 +22,16 @@ class GasSizesViewSet(viewsets.ModelViewSet):
 class CardDetailsApiView(viewsets.ModelViewSet):
     queryset = Card_details.objects.all()
     serializer_class = Card_detailsSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+    
 
 class PurchaseSerializerApiView(viewsets.ModelViewSet):
     queryset = Purchase.objects.all()
     serializer_class = PurchaseSerializer
+    
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

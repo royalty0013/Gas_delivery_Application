@@ -59,7 +59,7 @@ class Gas_Sizes(models.Model):
         verbose_name_plural = "Gas Sizes"
 
 class Card_details(models.Model):
-    user = models.ForeignKey(User, related_name="customer_card_detail", on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name="customer_card_detail", on_delete=models.CASCADE, null=True)
     card_type = models.CharField(max_length=30, null=True)
     card_number = models.CharField(max_length=25, null=True)
     CVV = models.IntegerField()
