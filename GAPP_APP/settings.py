@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'user',
     'gateway',
     'transaction',
-    'django_rest_passwordreset',
+    # 'django_rest_passwordreset',
 
 ]
 

@@ -3,8 +3,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
-from .serializers import Vendor_shopSerializer
-from .models import Vendor_shop
+from .serializers import Vendor_shop_Serializer, Update_Device_Token_Serializer
+from .models import Vendor_shop, User
 from transaction.models import Transportation_cost_per_km
 import math
 from django.core.exceptions import ObjectDoesNotExist
@@ -29,11 +29,11 @@ def distance(lat1, lon1, lat2, lon2):
 
 
 class VendorAPIView(APIView):
-    serializer_class = Vendor_shopSerializer
+    serializer_class = Vendor_shop_Serializer
     permission_classes = [IsAuthenticated]
     def get(self, request):
         queryset = Vendor_shop.objects.all()
-        serializer = Vendor_shopSerializer(queryset, many=True)
+        serializer = Vendor_shop_Serializer(queryset, many=True)
         return Response(serializer.data)
 
     def post(self, request):
@@ -71,6 +71,23 @@ class VendorAPIView(APIView):
         # print(vendor_list)
         return Response({"Vendor":vendor}, status=status.HTTP_200_OK)
 
+
+class Update_device_token(generics.UpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = Update_Device_Token_Serializer
+    permission_classes = [IsAuthenticated]
+
+    def update(self, request, *args, **kwargs):
+        device_token = {'device_token':request.data.get("device_token")}
+        serializer = self.serializer_class(request.user, data=device_token, partial=True)
+        if serializer.is_valid():
+            self.perform_update(serializer)
+        response = {
+            'status_code': status.HTTP_200_OK,
+            'Message':'Device token updated successfully',
+            'Device_token':serializer.validated_data["device_token"]
+        }
+        return Response(response)
 
         
 

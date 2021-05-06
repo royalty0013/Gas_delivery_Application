@@ -179,7 +179,7 @@ class ChangePasswordView(generics.UpdateAPIView):
                 'status': 'success',
                 'code': status.HTTP_200_OK,
                 'message': 'password updated successfully',
-                'data': []
+              
             }
             return Response(response)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
