@@ -40,7 +40,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=100)
     phone_number = models.CharField(max_length=20)
     user_type = models.CharField(max_length=20, choices=USERS, default="Customer")
-    device_token = models.CharField(max_length=100, null=True)
+    device_token = models.CharField(max_length=100, null=True, blank=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_verified = models.BooleanField(default=False)
