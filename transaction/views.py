@@ -27,11 +27,23 @@ class CardDetailsApiView(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
     
-
 class PurchaseSerializerApiView(viewsets.ModelViewSet):
     queryset = Purchase.objects.all()
     serializer_class = PurchaseSerializer
     
-
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+class CompletedTransactionAPiView(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        queryset = Purchase.objects.filter(transaction_completed=True)
+        serializer = PurchaseSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+class UncompletedTransactionAPiView(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        queryset = Purchase.objects.filter(transaction_completed=False)
+        serializer = PurchaseSerializer(queryset, many=True)
+        return Response(serializer.data)

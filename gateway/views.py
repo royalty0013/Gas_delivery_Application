@@ -136,7 +136,7 @@ class RegisterView(APIView):
             return Response(response, status=status.HTTP_201_CREATED)
 
         except IntegrityError:
-            return Response({"Error": "Email already exist"})
+            return Response({"Error": "User Already Exist"})
         # return Response({"success": "User Created"})
         
 class verifyEmailView(APIView):

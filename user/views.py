@@ -30,7 +30,7 @@ def distance(lat1, lon1, lat2, lon2):
 
 class VendorAPIView(APIView):
     serializer_class = Vendor_shop_Serializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     def get(self, request):
         queryset = Vendor_shop.objects.all()
         serializer = Vendor_shop_Serializer(queryset, many=True)
@@ -42,13 +42,16 @@ class VendorAPIView(APIView):
         serializer.is_valid(raise_exception=True)
 
         lat = serializer.validated_data["latitude"]
-        long = serializer.validated_data["longitude"]
+        lon = serializer.validated_data["longitude"]
         
         try:
             delivery_unit_price = Transportation_cost_per_km.objects.get(pk=1)
             delivery_unit_price = delivery_unit_price.unit_price 
         except ObjectDoesNotExist:
             delivery_unit_price = 100
+
+        user = User.objects.get(email=self.request.user)
+        device_token = user.device_token
 
         vendors = Vendor_shop.objects.all()
         vendor = {}
@@ -57,15 +60,16 @@ class VendorAPIView(APIView):
 
             v_lat = vend.latitude
             v_long = vend.longitude
-            dis = distance(lat, long, v_lat, v_long)
+            dis = distance(lat, lon, v_lat, v_long)
             # print(dis)
             if dis <= 5.0:
                 vendor["vendor_id"] = vend.id
                 vendor["Vendor_name"] = vend.company_name
+                vendor["device_token"] = device_token
                 vendor["lat"] = vend.latitude
                 vendor["long"] = vend.longitude
                 vendor["address"] = vend.address
-                vendor["distance"] = f"{dis}km"
+                vendor["distance"] = f"{math.ceil(dis)}km"
                 vendor["delivery_fee"] = math.ceil(dis) * delivery_unit_price
             # return Response({"Message":vendor}, status=status.HTTP_200_OK)
         # print(vendor_list)

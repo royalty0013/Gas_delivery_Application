@@ -57,7 +57,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Vendor_shop(models.Model):
     vendor = models.OneToOneField(User, on_delete=models.CASCADE)
     company_name = models.CharField(max_length=100, null=True, blank=True)
-    user_type = models.CharField(max_length=20, choices=USERS, default="Vendor")
     address = models.TextField()
     phone_number = models.CharField(max_length=30, null=True)
     latitude = models.FloatField()

@@ -7,6 +7,6 @@ class UserAdmin(admin.ModelAdmin):
 admin.site.register(User, UserAdmin)
 
 class Vendor_shopAdmin(admin.ModelAdmin):
-    list_display = ['vendor', 'company_name', 'user_type','phone_number', 'address', 'longitude','latitude','created_at', 'updated_at']
+    list_display = ['vendor', 'company_name', 'phone_number', 'address', 'longitude','latitude','created_at', 'updated_at']
 admin.site.register(Vendor_shop, Vendor_shopAdmin)
 
