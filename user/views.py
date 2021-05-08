@@ -50,18 +50,16 @@ class VendorAPIView(APIView):
         except ObjectDoesNotExist:
             delivery_unit_price = 100
 
-        user = User.objects.get(email=self.request.user)
-        device_token = user.device_token
-
         vendors = Vendor_shop.objects.all()
         vendor = {}
         for vend in vendors:
             # vendor_list.append(vend)
-
             v_lat = vend.latitude
             v_long = vend.longitude
             dis = distance(lat, lon, v_lat, v_long)
             # print(dis)
+            user = User.objects.get(email=vend.vendor)
+            device_token = user.device_token
             if dis <= 5.0:
                 vendor["vendor_id"] = vend.id
                 vendor["Vendor_name"] = vend.company_name
