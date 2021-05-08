@@ -4,7 +4,8 @@ from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework import viewsets
 from .models import Transaction, Gas_Sizes, Card_details, Purchase
-from .serializers import TransactionSerializer, Gas_SizesSerializer, Card_detailsSerializer, PurchaseSerializer
+from user.models import User
+from .serializers import TransactionSerializer, Gas_SizesSerializer, TransactionStatusSerializer, Card_detailsSerializer, PurchaseSerializer
 from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
@@ -37,13 +38,15 @@ class PurchaseSerializerApiView(viewsets.ModelViewSet):
 class CompletedTransactionAPiView(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request):
-        queryset = Purchase.objects.filter(transaction_completed=True)
-        serializer = PurchaseSerializer(queryset, many=True)
+        customer_name = Purchase.objects.filter(customer_id=self.request.user, transaction_completed=True).order_by("-created_at")
+        serializer = TransactionStatusSerializer(instance=customer_name, many=True)
+
         return Response(serializer.data)
 
 class UncompletedTransactionAPiView(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request):
-        queryset = Purchase.objects.filter(transaction_completed=False)
-        serializer = PurchaseSerializer(queryset, many=True)
+        customer_name = Purchase.objects.filter(customer_id=self.request.user, transaction_completed=False).order_by("-created_at")
+        serializer = TransactionStatusSerializer(instance=customer_name, many=True)
+
         return Response(serializer.data)

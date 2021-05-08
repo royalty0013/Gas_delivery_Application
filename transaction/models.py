@@ -12,6 +12,7 @@ class Purchase(models.Model):
     items_purchased = models.JSONField()
     item_cost = models.FloatField(default=0)
     transporter = models.CharField(max_length=50, null=True)
+    distance = models.CharField(max_length=20, null=True)
     transportation_cost = models.FloatField(default=0)
     transaction_completed = models.BooleanField(default=False)
     total_price = models.FloatField()
