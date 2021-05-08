@@ -32,7 +32,7 @@ class PurchaseSerializerApiView(viewsets.ModelViewSet):
     serializer_class = PurchaseSerializer
     
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save(customer_id=self.request.user)
 
 class CompletedTransactionAPiView(APIView):
     permission_classes = [IsAuthenticated]

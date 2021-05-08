@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from rest_framework.fields import CurrentUserDefault
 from .models import Transaction, Gas_Sizes, Card_details, Purchase
 
 class TransactionSerializer(serializers.ModelSerializer):
@@ -21,6 +20,7 @@ class Card_detailsSerializer(serializers.ModelSerializer):
         
 
 class PurchaseSerializer(serializers.ModelSerializer):
+    customer_id = serializers.ReadOnlyField(source="user.email")
     class Meta:
         model = Purchase
         fields = "__all__"
