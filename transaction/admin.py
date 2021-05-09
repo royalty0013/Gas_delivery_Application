@@ -3,11 +3,11 @@ from .models import Purchase, Transaction, Gas_Sizes, Transportation_cost_per_km
 # Register your models here.
 
 class PurchaseAdmin(admin.ModelAdmin):
-    list_display = ['customer_id', 'vendor_name','items_purchased', 'item_cost', 'transporter', 'distance', 'transportation_cost', 'transaction_completed', 'total_price', 'created_at', 'updated_at']
+    list_display = ['customer','closest_vendor', 'accepted_vendor', 'vendor_name','items_purchased', 'item_cost', 'transporter', 'distance', 'transportation_cost', 'transaction_completed', 'total_price', 'created_at', 'updated_at']
 admin.site.register(Purchase, PurchaseAdmin)
 
 class TransactionAdmin(admin.ModelAdmin):
-    list_display = [ 'customer_id', 'transporter_id','vendor_id', 'transaction_completed','transaction_verified', 'Reference_id',  'created_at', 'updated_at']
+    list_display = [ 'customer', 'transporter','vendor', 'transaction_completed','transaction_verified', 'reference',  'created_at', 'updated_at']
 admin.site.register(Transaction, TransactionAdmin)
 
 class Gas_SizesAdmin(admin.ModelAdmin):
@@ -19,5 +19,5 @@ class TransporterUnitPriceAdmin(admin.ModelAdmin):
 admin.site.register(Transportation_cost_per_km, TransporterUnitPriceAdmin)
 
 class Card_detailsAdmin(admin.ModelAdmin):
-    list_display = ['user','card_type', 'card_number', 'CVV', 'expiry_date', 'created_at', 'updated_at']
+    list_display = ['user','card_type', 'card_number', 'cvv', 'expiry_date', 'created_at', 'updated_at']
 admin.site.register(Card_details, Card_detailsAdmin)

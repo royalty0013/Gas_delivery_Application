@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from rest_framework import viewsets
 from .models import Transaction, Gas_Sizes, Card_details, Purchase
 from user.models import User
-from .serializers import TransactionSerializer, Gas_SizesSerializer, TransactionStatusSerializer, Card_detailsSerializer, PurchaseSerializer
+from .serializers import TransactionSerializer,  Gas_SizesSerializer, TransactionStatusSerializer, Card_detailsSerializer, PurchaseSerializer
 from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
@@ -33,12 +33,12 @@ class PurchaseSerializerApiView(viewsets.ModelViewSet):
     serializer_class = PurchaseSerializer
     
     def perform_create(self, serializer):
-        serializer.save(customer_id=self.request.user)
+        serializer.save(customer=self.request.user)
 
 class CompletedTransactionAPiView(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request):
-        customer_name = Purchase.objects.filter(vendor_id=self.request.user, transaction_completed=True).order_by("-created_at")
+        customer_name = Purchase.objects.filter(closest_vendor=self.request.user, transaction_completed=True).order_by("-created_at")
         serializer = TransactionStatusSerializer(instance=customer_name, many=True)
 
         return Response(serializer.data)
@@ -46,7 +46,28 @@ class CompletedTransactionAPiView(APIView):
 class UncompletedTransactionAPiView(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request):
-        customer_name = Purchase.objects.filter(vendor_id=self.request.user, transaction_completed=False).order_by("-created_at")
+        customer_name = Purchase.objects.filter(closest_vendor=self.request.user, transaction_completed=False).order_by("-created_at")
         serializer = TransactionStatusSerializer(instance=customer_name, many=True)
 
         return Response(serializer.data)
+
+# class VendorAcceptDeal(generics.UpdateAPIView):
+#     queryset = Purchase.objects.all()
+#     serializer_class = VendorAcceptDealSerializer
+#     permission_classes = [IsAuthenticated]
+
+#     def update(self, request, *args, **kwargs):
+#         accepted_vendor = {'accepted_vendor':request.data.get("accepted_vendor")}
+#         serializer = self.serializer_class(request.user, data=accepted_vendor, partial=True)
+#         if serializer.is_valid():
+#             self.perform_update(serializer)
+#         response = {
+#             'status_code': status.HTTP_200_OK,
+#             'Message':'Vendor accepts deal',
+#             # 'accepted_vendor':serializer.validated_data["accepted_vendor"]
+#         }
+
+#         return Response(response)
+    
+
+
