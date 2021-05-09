@@ -38,7 +38,7 @@ class PurchaseSerializerApiView(viewsets.ModelViewSet):
 class CompletedTransactionAPiView(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request):
-        customer_name = Purchase.objects.filter(customer_id=self.request.user, transaction_completed=True).order_by("-created_at")
+        customer_name = Purchase.objects.filter(vendor_id=self.request.user, transaction_completed=True).order_by("-created_at")
         serializer = TransactionStatusSerializer(instance=customer_name, many=True)
 
         return Response(serializer.data)
@@ -46,7 +46,7 @@ class CompletedTransactionAPiView(APIView):
 class UncompletedTransactionAPiView(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request):
-        customer_name = Purchase.objects.filter(customer_id=self.request.user, transaction_completed=False).order_by("-created_at")
+        customer_name = Purchase.objects.filter(vendor_id=self.request.user, transaction_completed=False).order_by("-created_at")
         serializer = TransactionStatusSerializer(instance=customer_name, many=True)
 
         return Response(serializer.data)
