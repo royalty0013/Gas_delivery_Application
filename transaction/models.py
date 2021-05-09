@@ -9,7 +9,6 @@ from user.models import Vendor_shop
 class Purchase(models.Model):
     customer_id = models.ForeignKey(User, related_name="Customer_account", on_delete=models.CASCADE)
     vendor_name = models.ForeignKey(Vendor_shop, related_name="Vendor_name", on_delete=models.CASCADE, null=True)
-    vendor_id = models.ForeignKey(User, related_name="Vendor", on_delete=models.CASCADE, null=True)
     items_purchased = models.JSONField()
     item_cost = models.FloatField(default=0)
     transporter = models.CharField(max_length=50, null=True)
