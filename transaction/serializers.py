@@ -33,19 +33,11 @@ class PurchaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Purchase
         fields = "__all__"
-# class UserSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = User
-#         fields = "__all__"
+
         
-# class VendorAcceptDealSerializer(serializers.ModelSerializer):
-#     accepted_vendor = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
-#     class Meta:
-#         model = Purchase
-#         fields = "__all__"
-#     def update(self, instance, validated_data):
-#         accepted_vendor = validated_data.pop("accepted_vendor")
-#         instance.accepted_vendor_id = accepted_vendor.id
-#         # instance.accepted_vendor = validated_data.get("email", instance.accepted_vendor)
-#         instance.save()
-#         return instance
+class VendorAcceptDealSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Purchase
+        fields = "__all__"
+    

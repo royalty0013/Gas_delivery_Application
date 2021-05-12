@@ -1,11 +1,13 @@
+from rest_framework import response
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import generics
+from rest_framework.serializers import Serializer
 from rest_framework.views import APIView
 from rest_framework import viewsets
 from .models import Transaction, Gas_Sizes, Card_details, Purchase
 from user.models import User
-from .serializers import TransactionSerializer,  Gas_SizesSerializer, TransactionStatusSerializer, Card_detailsSerializer, PurchaseSerializer
+from .serializers import TransactionSerializer,  Gas_SizesSerializer, VendorAcceptDealSerializer, TransactionStatusSerializer, Card_detailsSerializer, PurchaseSerializer
 from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
@@ -51,23 +53,26 @@ class UncompletedTransactionAPiView(APIView):
 
         return Response(serializer.data)
 
-# class VendorAcceptDeal(generics.UpdateAPIView):
-#     queryset = Purchase.objects.all()
-#     serializer_class = VendorAcceptDealSerializer
-#     permission_classes = [IsAuthenticated]
-
-#     def update(self, request, *args, **kwargs):
-#         accepted_vendor = {'accepted_vendor':request.data.get("accepted_vendor")}
-#         serializer = self.serializer_class(request.user, data=accepted_vendor, partial=True)
-#         if serializer.is_valid():
-#             self.perform_update(serializer)
-#         response = {
-#             'status_code': status.HTTP_200_OK,
-#             'Message':'Vendor accepts deal',
-#             # 'accepted_vendor':serializer.validated_data["accepted_vendor"]
-#         }
-
-#         return Response(response)
+class VendorAcceptDeal(generics.UpdateAPIView):
+    queryset = Purchase.objects.all()
+    serializer_class = VendorAcceptDealSerializer
+    permission_classes = [IsAuthenticated]
+    lookup_field = "id"
+    
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.serializer_class(
+            data=request.data, instance=instance, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        
+        response = {
+            'status_code':status.HTTP_200_OK,
+            'Message': 'Vendor has accepted deal'
+        }
+        
+        return Response(response)
+        
     
 
 
