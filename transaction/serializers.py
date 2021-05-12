@@ -36,7 +36,6 @@ class PurchaseSerializer(serializers.ModelSerializer):
 
         
 class VendorAcceptDealSerializer(serializers.ModelSerializer):
-    
     class Meta:
         model = Purchase
         fields = "__all__"

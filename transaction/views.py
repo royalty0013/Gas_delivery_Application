@@ -66,12 +66,13 @@ class VendorAcceptDeal(generics.UpdateAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         
-        response = {
-            'status_code':status.HTTP_200_OK,
-            'Message': 'Vendor has accepted deal'
-        }
+        # response = {
+        #     'status_code':status.HTTP_200_OK,
+        #     'Message': 'Deal has been accepted deal',
+        #     'Vendor': serializer._validated_data["accepted_vendor"]
+        # }
         
-        return Response(response)
+        return Response(serializer.data)
         
     
 
