@@ -3,7 +3,7 @@ from .models import Purchase, Transaction, Gas_Sizes, Transportation_cost_per_km
 # Register your models here.
 
 class PurchaseAdmin(admin.ModelAdmin):
-    list_display = ['customer','closest_vendor', 'accepted_vendor', 'vendor_name','items_purchased', 'item_cost', 'transporter', 'distance', 'transportation_cost', 'transaction_completed', 'total_price', 'created_at', 'updated_at']
+    list_display = ['customer','closest_vendor', 'accepted_vendor', 'vendor_name','items_purchased', 'item_cost', 'transporter', 'transporter_name', 'distance', 'transportation_cost', 'transaction_completed', 'total_price', 'created_at', 'updated_at']
 admin.site.register(Purchase, PurchaseAdmin)
 
 class TransactionAdmin(admin.ModelAdmin):

@@ -2,7 +2,7 @@ from django.db import models
 import jsonfield
 from django.utils import timezone
 from user.models import User
-from user.models import Vendor_shop
+from user.models import Vendor_shop, Transporter
 
 # Create your models here.
 
@@ -10,10 +10,11 @@ class Purchase(models.Model):
     customer = models.ForeignKey(User, related_name="Customer_account", on_delete=models.CASCADE)
     closest_vendor = models.ForeignKey(User, related_name="closest_vendor", on_delete=models.CASCADE, null=True)
     accepted_vendor = models.ForeignKey(User, related_name="vendor", on_delete=models.CASCADE, null=True, blank=True)
-    vendor_name = models.ForeignKey(Vendor_shop, related_name="Vendor_name", on_delete=models.CASCADE, null=True)
+    vendor_name = models.ForeignKey(Vendor_shop, related_name="Vendor_name", on_delete=models.CASCADE, null=True, blank=True)
     items_purchased = models.JSONField()
     item_cost = models.FloatField(default=0)
     transporter = models.ForeignKey(User, related_name="Transporter", on_delete=models.CASCADE, null=True, blank=True)
+    transporter_name = models.ForeignKey(Transporter, on_delete=models.CASCADE, null=True, blank=True)
     distance = models.CharField(max_length=20, null=True)
     transportation_cost = models.FloatField(default=0)
     transaction_completed = models.BooleanField(default=False)

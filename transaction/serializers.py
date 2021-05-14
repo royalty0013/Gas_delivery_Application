@@ -35,8 +35,7 @@ class PurchaseSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
         
-class VendorAcceptDealSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Purchase
-        fields = "__all__"
+class VendorAcceptDealSerializer(serializers.Serializer):
+    accept = serializers.BooleanField()
+    
     
