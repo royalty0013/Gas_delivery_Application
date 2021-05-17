@@ -55,7 +55,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.email
 
 class Vendor_shop(models.Model):
-    vendor = models.OneToOneField(User, on_delete=models.CASCADE)
+    vendor = models.OneToOneField(User, related_name="vendor_shop", on_delete=models.CASCADE)
     company_name = models.CharField(max_length=100, null=True, blank=True)
     address = models.TextField()
     phone_number = models.CharField(max_length=30, null=True)
@@ -71,7 +71,7 @@ class Vendor_shop(models.Model):
         verbose_name_plural = "Vendors"
         
 class Transporter(models.Model):
-    transporter = models.OneToOneField(User, on_delete=models.CASCADE)
+    transporter = models.OneToOneField(User, related_name="transporter", on_delete=models.CASCADE)
     name = models.CharField(max_length=30, null=True)
     address = models.CharField(max_length=50, null=True)
     phone_number = models.CharField(max_length=30, null=True)

@@ -1,13 +1,18 @@
 from rest_framework import serializers
 from .models import Vendor_shop, User
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["email", "phone_number", "name", "device_token"]
+
 class Vendor_shop_Serializer(serializers.ModelSerializer):
+    vendor = UserSerializer()
     latitude = serializers.FloatField()
     longitude = serializers.FloatField()
     class Meta:
         model = Vendor_shop
         fields = "__all__"
-        
 
 class Update_Device_Token_Serializer(serializers.ModelSerializer):
     class Meta:

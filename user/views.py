@@ -29,7 +29,6 @@ def distance(lat1, lon1, lat2, lon2):
 
 
 class VendorAPIView(APIView):
-    serializer_class = Vendor_shop_Serializer
     # permission_classes = [IsAuthenticated]
     def get(self, request):
         queryset = Vendor_shop.objects.all()
