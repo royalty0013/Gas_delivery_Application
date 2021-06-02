@@ -1,6 +1,6 @@
 import jwt
 from gateway.models import Jwt
-from user.models import User
+from user.models import User, Vendor_shop
 from datetime import datetime, timedelta
 from django.conf import settings as st
 import random
@@ -21,6 +21,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.encoding import smart_str, force_str, smart_bytes, DjangoUnicodeDecodeError, force_bytes
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.core.exceptions import ObjectDoesNotExist
 # Create your views here.
 
 def get_random(length):
@@ -64,7 +65,15 @@ class LoginView(APIView):
         )
         email= serializer.validated_data['email']
         user_details = User.objects.get(email=email)
-
+        
+        try:
+            shop_location = Vendor_shop.objects.get(vendor=user_details)
+            latitude = shop_location.latitude
+            longitude = shop_location.longitude
+        except ObjectDoesNotExist:
+            latitude = None
+            longitude = None
+        
         response ={
             "name":user_details.name,
             "email":user_details.email,
@@ -73,6 +82,8 @@ class LoginView(APIView):
             "verification_status":user_details.is_verified,
             "active_status":user_details.is_active,
             "account_creation_date":user_details.created_at,
+            "latitude":latitude,
+            "longitude":longitude,
             "status_code": 200,
             "token": access,
             "message": "User logged in successfully"

@@ -15,7 +15,6 @@ import requests
 import json
 
 
-
 # Create your views here.
 class TransactionApiView(APIView):
     permission_classes = [IsAuthenticated]
